@@ -1,15 +1,41 @@
-import { Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native';
 
 import { styles } from './styles';
 import { Participant } from '../../components/Participant';
 
 export function Home() {
-
+  const participants = [
+    'Rodrigo',
+    'Fernando',
+    'Ingrid',
+    'Fábio',
+    'Kardsley',
+    'Henrique',
+    'Afonso',
+    'Edelvira',
+    'Ana Raquel',
+    'Sylvia',
+    'José',
+    'João'
+  ]
+  
   function handleParticipantAdd() {
-console.log('Você clicou no botão adicionar')}
+    if(participants.includes("")){
+      
+    }
+}
 
 function handleParticipantRemove(name: string){
-  console.log(`Voce removeu o participante ${name}`)
+  Alert.alert("Remover", `Remover o participante ${name}?`, [
+    {
+    text: 'Sim',
+    onPress: () => Alert.alert("Deletado com sucesso!")
+    },
+    {
+      text: 'Não',
+      style: 'cancel'
+    }
+  ]); 
 }
 
   return(
@@ -32,14 +58,24 @@ function handleParticipantRemove(name: string){
       </Text>
     </TouchableOpacity>
     </View>    
-    <Participant name="Tomás Franco" onRemove={() => handleParticipantRemove('Tomá Franco')}/>
-    <Participant name="Ingrid Flores" onRemove={() => handleParticipantRemove('Ingrid')}/>
-    <Participant name="Edelvira Cristina" onRemove={() => handleParticipantRemove('Ingrid')}/>
-    <Participant name="Afonso Aires" onRemove={() => handleParticipantRemove('Ingrid')}/>  
-    
- 
-  </View>
 
-  
+    <FlatList 
+      data={participants}
+      keyExtractor={item => item}
+      renderItem={({ item }) => (
+        <Participant
+        key={item}
+        name={item}
+        onRemove={() => handleParticipantRemove(item)}        
+        />
+      )}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() => (
+          <Text style={styles.listEmptyText}>
+            Ninguém chegou no evento ainda? Adicione participantes em sua lista de presença;
+          </Text>
+        )}
+      />      
+  </View> 
   )
 }

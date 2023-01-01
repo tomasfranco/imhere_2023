@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ProgressViewIOSComponent} from "react-native";
+import { View, Text, TouchableOpacity} from "react-native";
 import { styles } from "./styles";
 
 type Props ={

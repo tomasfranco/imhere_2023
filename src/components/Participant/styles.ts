@@ -26,5 +26,5 @@ button: {
 buttonText: {
   color: '#fff',
   fontSize: 24
-},
+}
 });
