@@ -6,7 +6,7 @@ type Props ={
   onRemove: () => void;
 }
 
-export function Participant({name, onRemove }: Props) {
+export function Servico({name, onRemove }: Props) {
 
   return (
     <View style={styles.container}>
@@ -14,7 +14,7 @@ export function Participant({name, onRemove }: Props) {
 
       <TouchableOpacity style={styles.button} onPress={onRemove}>
       <Text style={styles.buttonText}>
-        -
+        ✔︎
       </Text>
     </TouchableOpacity>
     </View>

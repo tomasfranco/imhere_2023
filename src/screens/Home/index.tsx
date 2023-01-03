@@ -1,35 +1,54 @@
+import { useState } from 'react';
 import { Text, View, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native';
 
 import { styles } from './styles';
-import { Participant } from '../../components/Participant';
+import { Servico } from '../../components/servico';
+import { Ambiente } from '../../components/ambiente';
 
 export function Home() {
-  const participants = [
-    'Rodrigo',
-    'Fernando',
-    'Ingrid',
-    'Fábio',
-    'Kardsley',
-    'Henrique',
-    'Afonso',
-    'Edelvira',
-    'Ana Raquel',
-    'Sylvia',
-    'José',
-    'João'
-  ]
-  
-  function handleParticipantAdd() {
-    if(participants.includes("")){
-      
-    }
-}
+  const [servico, setServico] = useState<string[]>([]);
+  const [servicoName, setServicoName] = useState('');
 
-function handleParticipantRemove(name: string){
-  Alert.alert("Remover", `Remover o participante ${name}?`, [
+  const [ambiente, setAmbiente] = useState<string[]>([]);
+  const [nomeAmbiente, setNomeAmbiente] = useState('')
+  
+function handleServicoAdd() {
+    if(servico.includes(servicoName)){
+      return Alert.alert('Participante existe', 'Já existe um participante na lista com este nome')
+    }
+
+    setServico(prevState => [...prevState, servicoName])
+    setServicoName('')
+}
+function handleServicoConcluded(name: string){
+
+  Alert.alert("Serviço Concluído ✅", `${name} concluido com sucesso!`, [
     {
     text: 'Sim',
-    onPress: () => Alert.alert("Deletado com sucesso!")
+    onPress: () => setServico( prevState => prevState.filter(servico => servico !== name))
+    },
+    {
+      text: 'Não',
+      style: 'cancel'
+    }
+  ]); 
+}
+
+function handleAmbienteAdd() {
+    if(ambiente.includes(nomeAmbiente)){
+      return Alert.alert('Ambiente Repetido', 'Já existe um ambiente com este nome')
+    }
+
+    setAmbiente(prevState => [...prevState, nomeAmbiente])
+    setNomeAmbiente('')
+}
+
+function handleAmbientConcluded(name: string){
+
+  Alert.alert("Serviço Concluído ✅", `${name} concluido com sucesso!`, [
+    {
+    text: 'Sim',
+    onPress: () => setAmbiente( prevState => prevState.filter(ambiente => ambiente !== name))
     },
     {
       text: 'Não',
@@ -40,39 +59,58 @@ function handleParticipantRemove(name: string){
 
   return(
     <View style={styles.container}>
-    <Text style={styles.eventName}>Nome do evento</Text> 
+    <Text style={styles.eventName}>Cliente: Ingrid Flores</Text> 
 
     <Text style={styles.eventDate}
-    >Quarta, 29 de Dezembro de 2022</Text>
+    >Quarta Feira, 29 de Dezembro de 2022</Text>
 
-   <View style={styles.form}>
+    <Text style={styles.typeService}
+    >Tipo de Serviço: Integral 8h</Text>
+
+   <View style={styles.serviceForm}>
     <TextInput    
       style={styles.input}
-      placeholder="Nome do participante"
-      placeholderTextColor="#6b6b6b"
+      placeholder="Adicionar Serviço"
+      placeholderTextColor="#c4aab7"
+      onChangeText={setServicoName}
+      value={servicoName}
     />
 
-    <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}>
+    <TouchableOpacity style={styles.button} onPress={handleServicoAdd}>
       <Text style={styles.buttonText}>
         +
       </Text>
     </TouchableOpacity>
-    </View>    
+    </View>  
+    <View style={styles.serviceEnvironment}>  
+    <TextInput    
+      style={styles.input}
+      placeholder="Adicionar Ambiente"
+      placeholderTextColor="#c4aab7"
+      onChangeText={setNomeAmbiente}
+      value={nomeAmbiente}
+    />
 
+    <TouchableOpacity style={styles.button} onPress={handleAmbienteAdd}>
+      <Text style={styles.buttonText}>
+        +
+      </Text>
+    </TouchableOpacity>
+    </View>
     <FlatList 
-      data={participants}
+      data={servico}
       keyExtractor={item => item}
-      renderItem={({ item }) => (
-        <Participant
+      renderItem={({ item }) => (     
+        <Servico
         key={item}
         name={item}
-        onRemove={() => handleParticipantRemove(item)}        
-        />
+        onRemove={() => handleServicoConcluded(item)}        
+        />    
       )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
           <Text style={styles.listEmptyText}>
-            Ninguém chegou no evento ainda? Adicione participantes em sua lista de presença;
+            Nenhum serviço em sua lista de prioridades? Adicione suas prioridades em sua lista!
           </Text>
         )}
       />      
